@@ -1,35 +1,48 @@
-import NewsList from "@/components/news-list";
-import { getAvailableNewsMonths, getNewsForYear } from "@/lib/news";
-import { getAvailableNewsYears } from "@/lib/news";
 import Link from "next/link";
-export default function FilteredNewsPage({ params }) {
-  const selectedYear = params.filter?.[0];
-  const selectedMonth = params.filter?.[1];
+
+import NewsList from "@/components/news-list";
+import {
+  getAvailableNewsMonths,
+  getAvailableNewsYears,
+  getNewsForYear,
+  getNewsForYearAndMonth,
+} from "@/lib/news";
+
+export default async function FilteredNewsPage({ params }) {
+  const filter = params.filter;
+
+  const selectedYear = filter?.[0];
+  const selectedMonth = filter?.[1];
 
   let news;
-  let links = getAvailableNewsYears();
+  let links = await getAvailableNewsYears();
 
   if (selectedYear && !selectedMonth) {
-    news = getNewsForYear(selectedYear);
-    links = getAvailableNewsYears(selectedYear);
+    news = await getNewsForYear(selectedYear);
+    links = getAvailableNewsMonths(selectedYear);
   }
-  if (selectedMonth && selectedYear) {
-    news = getNewsForYearAndMonth(selectedYear, selectedMonth);
+
+  if (selectedYear && selectedMonth) {
+    news = await getNewsForYearAndMonth(selectedYear, selectedMonth);
     links = [];
   }
-  let newsContent = <p>No news found for the seleceted period.</p>;
+
+  let newsContent = <p>No news found for the selected period.</p>;
 
   if (news && news.length > 0) {
     newsContent = <NewsList news={news} />;
   }
 
-  //선택연도가 있지만 연도가 포함되지 않으면
+  const availableYears = await getAvailableNewsYears();
+
   if (
-    (selectedYear && !getAvailableNewsYears().includes(+selectedYear)) ||
-    (selectedMonth && !getAvailableNewsMonths().includes(+selectedMonth))
+    (selectedYear && !availableYears.includes(selectedYear)) ||
+    (selectedMonth &&
+      !getAvailableNewsMonths(selectedYear).includes(selectedMonth))
   ) {
-    throw new Error("Invalid Filter");
+    throw new Error("Invalid filter.");
   }
+
   return (
     <>
       <header id="archive-header">
