@@ -9,7 +9,7 @@ dependencies:
     specifier: ^11.5.0
     version: 11.5.0
   cloudinary:
-    specifier: ^2.0.2
+    specifier: ^2.5.1
     version: 2.5.1
   next:
     specifier: 14.1.0
