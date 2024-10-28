@@ -1,8 +1,12 @@
 "use server";
 import { storePost } from "@/lib/posts";
 import { redirect } from "next/navigation";
+import { uploadImage } from "@/lib/cloudinary";
+import { updatePostLikeStatus } from "@/lib/posts";
+import { revalidatePath } from "next/cache";
+
 const isInValidContent = (content) => {
-  return !content || title.trim().length === 0;
+  return !content || content.trim().length === 0;
 };
 
 export async function createPost(prevState, formData) {
@@ -23,11 +27,25 @@ export async function createPost(prevState, formData) {
   if (errors.length) {
     return { errors };
   }
+  let imageUrl;
+  try {
+    imageUrl = await uploadImage(image);
+  } catch (error) {
+    throw new Error(
+      "Image upload failed, post was not created. Please try again later"
+    );
+  }
   await storePost({
-    imageUrl: "",
+    imageUrl,
     title,
     content,
     userId: 1,
   });
+  revalidatePath("/", "layout");
   redirect("/feed");
+}
+
+export async function togglePostLikeStatus(postId) {
+  await updatePostLikeStatus(postId, 2);
+  revalidatePath("/", "layout");
 }
