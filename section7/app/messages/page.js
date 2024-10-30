@@ -1,10 +1,16 @@
-import Messages from '@/components/messages';
+import Messages from "@/components/messages";
+import { unstable_noStore } from "next/cache";
+
+export const revalidate = 5;
+export const dynamic = "force-dynamic";
 
 export default async function MessagesPage() {
-  const response = await fetch('http://localhost:8080/messages', {
-    headers: {
-      'X-ID': 'page',
-    },
+  unstable_noStore(); // 이 컴포넌트에서만
+  const response = await fetch("http://localhost:8080/messages", {
+    // cache: "no-store", // 동일 요청이 보내지는 이 곳의 데이터는 cache 되지 않음
+    // next: {
+    //   revalidate: 5, // nextjs가 캐시 데이터를 재사용해야할 초
+    // },
   });
   const messages = await response.json();
 
