@@ -1,7 +1,7 @@
 import { redirect } from "next/navigation";
 
 import { addMessage } from "@/lib/messages";
-import { revalidatePath } from "next/cache";
+import { revalidatePath, revalidateTag } from "next/cache";
 
 export default function NewMessagePage() {
   async function createMessage(formData) {
@@ -9,7 +9,9 @@ export default function NewMessagePage() {
 
     const message = formData.get("message");
     addMessage(message);
-    revalidatePath("/message", "layout"); // message/+중첩페이지('layout') 까지 경로 캐시 삭제
+    // revalidatePath("/message", "layout"); // message/+중첩페이지('layout') 까지 경로 캐시 삭제
+
+    revalidateTag("msg");
     redirect("/messages");
   }
 
