@@ -12,6 +12,7 @@ export default function Header() {
           // height={100}
           sizes="10vw"
           alt="Mobile phone with posts feed on it"
+          //Image컴포넌트는 기본적으로 lazy loading header같은 곳에 쓰이는 사진은 priority로 사전로드하도록함
           priority
         />
       </Link>
