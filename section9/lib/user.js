@@ -1,8 +1,8 @@
-import { db } from "better-sqlite3";
+import db from "./db";
 
 export function createUser(email, password) {
   const result = db
-    .prepare("INSERT INTO users (email,password) VALUES (?,?")
+    .prepare("INSERT INTO users (email, password) VALUES (?, ?)")
     .run(email, password);
   return result.lastInsertRowid;
 }
