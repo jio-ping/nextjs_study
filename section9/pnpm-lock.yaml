@@ -5,9 +5,15 @@ settings:
   excludeLinksFromLockfile: false
 
 dependencies:
+  '@lucia-auth/adapter-sqlite':
+    specifier: ^3.0.2
+    version: 3.0.2(better-sqlite3@11.5.0)(lucia@3.2.2)
   better-sqlite3:
     specifier: '11.5'
     version: 11.5.0
+  lucia:
+    specifier: ^3.2.2
+    version: 3.2.2
   next:
     specifier: 14.1.4
     version: 14.1.4(react-dom@18.3.1)(react@18.3.1)
@@ -19,6 +25,22 @@ dependencies:
     version: 18.3.1(react@18.3.1)
 
 packages:
+
+  /@lucia-auth/adapter-sqlite@3.0.2(better-sqlite3@11.5.0)(lucia@3.2.2):
+    resolution: {integrity: sha512-UlXpF+2UoFEdm1AsriJii5BOARwqko6SX29rQ8T8Za7rnjj9KLXLaRVQUgBhGmggAyvzCtguJ2+XOZDsfWm6Sw==}
+    peerDependencies:
+      '@libsql/client': ^0.3.0
+      better-sqlite3: 8.x - 11.x
+      lucia: 3.x
+    peerDependenciesMeta:
+      '@libsql/client':
+        optional: true
+      better-sqlite3:
+        optional: true
+    dependencies:
+      better-sqlite3: 11.5.0
+      lucia: 3.2.2
+    dev: false
 
   /@next/env@14.1.4:
     resolution: {integrity: sha512-e7X7bbn3Z6DWnDi75UWn+REgAbLEqxI8Tq2pkFOFAMpWAWApz/YCUhtWMWn410h8Q2fYiYL7Yg5OlxMOCfFjJQ==}
@@ -104,6 +126,27 @@ packages:
     requiresBuild: true
     dev: false
     optional: true
+
+  /@oslojs/asn1@1.0.0:
+    resolution: {integrity: sha512-zw/wn0sj0j0QKbIXfIlnEcTviaCzYOY3V5rAyjR6YtOByFtJiT574+8p9Wlach0lZH9fddD4yb9laEAIl4vXQA==}
+    dependencies:
+      '@oslojs/binary': 1.0.0
+    dev: false
+
+  /@oslojs/binary@1.0.0:
+    resolution: {integrity: sha512-9RCU6OwXU6p67H4NODbuxv2S3eenuQ4/WFLrsq+K/k682xrznH5EVWA7N4VFk9VYVcbFtKqur5YQQZc0ySGhsQ==}
+    dev: false
+
+  /@oslojs/crypto@1.0.1:
+    resolution: {integrity: sha512-7n08G8nWjAr/Yu3vu9zzrd0L9XnrJfpMioQcvCMxBIiF5orECHe5/3J0jmXRVvgfqMm/+4oxlQ+Sq39COYLcNQ==}
+    dependencies:
+      '@oslojs/asn1': 1.0.0
+      '@oslojs/binary': 1.0.0
+    dev: false
+
+  /@oslojs/encoding@1.1.0:
+    resolution: {integrity: sha512-70wQhgYmndg4GCPxPPxPGevRKqTIJ2Nh4OkiMWmDAVYsTQ+Ta7Sq+rPevXyXGdzr30/qZBnyOalCszoMxlyldQ==}
+    dev: false
 
   /@swc/helpers@0.5.2:
     resolution: {integrity: sha512-E4KcWTpoLHqwPHLxidpOqQbcrZVgi0rsmmZXUle1jXmJfuIf/UWpczUJ7MZZ5tlxytgJXyp0w4PGkkeLiuIdZw==}
@@ -228,6 +271,13 @@ packages:
     hasBin: true
     dependencies:
       js-tokens: 4.0.0
+    dev: false
+
+  /lucia@3.2.2:
+    resolution: {integrity: sha512-P1FlFBGCMPMXu+EGdVD9W4Mjm0DqsusmKgO7Xc33mI5X1bklmsQb0hfzPhXomQr9waWIBDsiOjvr1e6BTaUqpA==}
+    dependencies:
+      '@oslojs/crypto': 1.0.1
+      '@oslojs/encoding': 1.1.0
     dev: false
 
   /mimic-response@3.1.0:
