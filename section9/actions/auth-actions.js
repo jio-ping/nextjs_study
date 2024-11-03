@@ -1,7 +1,7 @@
 "use server";
 import { createAuthSession } from "@/lib/auth";
-import { hashUserPassword } from "@/lib/hash";
-import { createUser } from "@/lib/user";
+import { hashUserPassword, verifyPassword } from "@/lib/hash";
+import { createUser, getUserByEmail } from "@/lib/user";
 import { redirect } from "next/navigation";
 // 서버 액션 역할 하는 기능 생성을 위한 지시문
 export async function signup(prevState, formData) {
@@ -38,4 +38,41 @@ export async function signup(prevState, formData) {
     }
     throw error;
   }
+}
+
+export async function login(prevState, formData) {
+  // 사용자가 제출한 값을 검증할 필요는 없음
+  const email = formData.get("email");
+  const password = formData.get("password");
+
+  const existingUser = getUserByEmail(email);
+  if (!existingUser) {
+    return {
+      errors: {
+        email: "Could not authenticate user, please check your credentials ",
+      },
+    };
+  }
+  //
+  const isValidPassword = verifyPassword(existingUser.password, password);
+  if (!isValidPassword) {
+    return {
+      errors: {
+        password: "Could not authenticate user, please check your credentials ",
+      },
+    };
+  }
+
+  // 인증 세션을 만듦
+  await createAuthSession(existingUser.id);
+  // 리디렉션
+  redirect("/training");
+}
+
+// helper server action  - 모드에 따라 적절한 서버 동작 호출
+export async function auth(mode, prevState, formData) {
+  if (mode === "login") {
+    return login(prevState, formData);
+  }
+  return signup(prevState, formData);
 }
