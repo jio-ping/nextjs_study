@@ -81,3 +81,21 @@ export async function verifyAuth() {
   } catch {}
   return result;
 }
+
+// 해당 사용자에 대해 세션과 세션쿠키를 종료
+export async function destroySession() {
+  // 유효한 세션이 있는지 확인
+  const { session } = await verifyAuth();
+  if (!session) {
+    return { error: "Unauthorized!" };
+  }
+  // 세션을 무효화 (DB 테이블에 접근해 세션 삭제)
+  await lucia.invalidateSession(session.id);
+  // 쿠키 삭제
+  const sessionCookie = lucia.createBlankSessionCookie();
+  cookies().set(
+    sessionCookie.name,
+    sessionCookie.value,
+    sessionCookie.attributes
+  );
+}
